@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_mobile"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="swe.fhbielefeld.raumbuchung20.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_neu"
+        android:name="swe.fhbielefeld.raumbuchung20.NeueBuchungFragment"
+        android:label="Neue Buchung"
+        tools:layout="@layout/fragment_neue_buchung" />
+
+    <fragment
+        android:id="@+id/navigation_buchungen"
+        android:name="swe.fhbielefeld.raumbuchung20.BuchungenFragment"
+        android:label="Buchungen"
+        tools:layout="@layout/fragment_neue_buchung" />
+
+
+</navigation>
