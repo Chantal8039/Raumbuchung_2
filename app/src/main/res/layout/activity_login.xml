@@ -7,24 +7,24 @@
     tools:context=".NeueBuchungFragment">
 
     <EditText
-        android:id="@+id/editText_email"
+        android:id="@+id/editText_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="e-mail eingeben" />
+        android:hint="@string/LoginUsername" />
 
     <EditText
         android:id="@+id/editText_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="passwort eingeben" />
+        android:inputType="textPassword"
+        android:hint="@string/LoginPassword" />
 
     <Button
         android:id="@+id/button_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="LOGIN" />
+        android:text="@string/LoginButton" />
 </LinearLayout>

@@ -1,7 +1,9 @@
 package swe.fhbielefeld.raumbuchung20;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -39,11 +41,43 @@ public class NeueBuchungFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mainActivity.addItem(editText.getText().toString());
+                // Dialogue pop-up warning for home list deletion
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                builder1.setMessage("Möchten Sie die Buchung hinzufügen?");
+                builder1.setCancelable(true);
+
+                // Set Button if user presses "Yes"
+                builder1.setPositiveButton(
+                        "Ja",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                assert mainActivity != null;
+                                mainActivity.addItem(editText.getText().toString());
+                                editText.setText("");
+                                editText.requestFocus();
+                                InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                assert mgr != null;
+                                mgr.hideSoftInputFromWindow(editText.getWindowToken(),0);
+                                dialog.cancel();
+                            }
+                        });
+
+                // Set Button if user presses "No"
+                builder1.setNegativeButton(
+                        "Nein",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+                /*mainActivity.addItem(editText.getText().toString());
                 editText.setText("");
                 editText.requestFocus();
                 InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                mgr.hideSoftInputFromWindow(editText.getWindowToken(),0);
+                mgr.hideSoftInputFromWindow(editText.getWindowToken(),0); */
             }
         });
 
