@@ -26,9 +26,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
             // Method to check whether the user input matches the (hard-coded) database.
-            public boolean UserCheck(){
-                EditText username = (EditText)findViewById(R.id.editText_username);
-                EditText password = (EditText)findViewById(R.id.editText_password);
+            private boolean UserCheck(){
+                EditText username = findViewById(R.id.editText_username);
+                EditText password = findViewById(R.id.editText_password);
 
                 String u1 = "admin", p1 = "admin";
                 String u2 = "chantal", p2 = "chantal";
@@ -44,31 +44,12 @@ public class LoginActivity extends AppCompatActivity {
                     return true;
                 }else if(username.getText().toString().equals(u4) && password.getText().toString().equals(p4)){
                     return true;
-                }else if(username.getText().toString().equals(u5) && password.getText().toString().equals(p5)){
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                }else return username.getText().toString().equals(u5) && password.getText().toString().equals(p5);
             }
 
             @Override
             public void onClick(View view){
-                EditText username = (EditText)findViewById(R.id.editText_username);
-                EditText password = (EditText)findViewById(R.id.editText_password);
-
-                // old code
-                /*if(username.getText().toString().equals("admin") && password.getText().toString().equals("admin")) {
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    String email = "";
-                    intent.putExtra("Extra_EMAIL",email);
-                    Toast.makeText(LoginActivity.this, "Sie haben sich erfolgreich angemeldet",Toast.LENGTH_SHORT).show();
-                    startActivity(intent);
-                    finish();
-                }*/
-
-                // new code with hard coded user name/pw check
+                // Check if username/pw match and login -> home screen
                 if(UserCheck()){
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     String email = "";
@@ -79,10 +60,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
+                    // if wrong, force user to write again
                     Toast.makeText(getApplicationContext(), "Falscher Username oder Passwort",Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
     }
 }
