@@ -7,4 +7,8 @@
     <string name="LoginUsername">username eingeben</string>
     <string name="LoginPassword">passwort eingeben</string>
     <string name="LoginButton">LOGIN</string>
+    <string name="HomeAddBuchung">HINZUFÜGEN</string>
+    <string name="BuchungHeader">Buchungsscreen</string>
+    <string name="BuchungRaumNr">Raumnummer</string>
+    <string name="BuchungDatumWahl">Wähle das Datum</string>
 </resources>
