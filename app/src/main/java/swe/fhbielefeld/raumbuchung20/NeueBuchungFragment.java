@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -15,17 +17,31 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import java.text.ParseException;  // neu von marvins code
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import swe.fhbielefeld.raumbuchung20.modules.Buchung;
+import swe.fhbielefeld.raumbuchung20.modules.Raum;
+
 public class NeueBuchungFragment extends Fragment {
 
 
-    public NeueBuchungFragment() {
+    private EditText editText_Raumnummer;
+    private Button button_Buchen;
+    private TextView textView_Datum;
+    private Spinner spinner_Start;
+    private Spinner spinner_End;
+    private Buchung buchung;
+    private MainActivity mainActivity;
+
+
+    public NeueBuchungFragment() throws ParseException {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,11 +49,13 @@ public class NeueBuchungFragment extends Fragment {
     {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_neue_buchung, container, false);
-        Button button = view.findViewById(R.id.button_buchen);
-        final EditText editText = view.findViewById(R.id.editText_buchen);
-        final MainActivity mainActivity = (MainActivity) getActivity();
-
-        button.setOnClickListener(new View.OnClickListener() {
+        button_Buchen = view.findViewById(R.id.button_buchen);
+        editText_Raumnummer = view.findViewById(R.id.editText_buchen);
+        textView_Datum = view.findViewById(R.id.textView_datum);
+        spinner_Start = view.findViewById(R.id.spinner_start);
+        spinner_End = view.findViewById(R.id.spinner_end);
+        mainActivity = (MainActivity) getActivity();
+        button_Buchen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
@@ -52,13 +70,11 @@ public class NeueBuchungFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 assert mainActivity != null;
-                                mainActivity.addItem(editText.getText().toString());
-                                editText.setText("");
-                                editText.requestFocus();
                                 InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
                                 assert mgr != null;
-                                mgr.hideSoftInputFromWindow(editText.getWindowToken(),0);
+                                mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(),0);
                                 dialog.cancel();
+                                buchung_erstellen();
                             }
                         });
 
@@ -73,16 +89,32 @@ public class NeueBuchungFragment extends Fragment {
 
                 AlertDialog alert11 = builder1.create();
                 alert11.show();
-                /*mainActivity.addItem(editText.getText().toString());
-                editText.setText("");
-                editText.requestFocus();
                 InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                mgr.hideSoftInputFromWindow(editText.getWindowToken(),0); */
+                mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(),0);
             }
         });
 
         return view;
 
     }
+    private void buchung_erstellen(){
+        String datum = textView_Datum.getText().toString();
+        String start = spinner_Start.getSelectedItem().toString();
+        String end = spinner_End.getSelectedItem().toString();
+        String raumnummer = editText_Raumnummer.getText().toString();
+
+        start = datum + " " + start;
+        end = datum + " " + end;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        LocalDateTime startZeit = LocalDateTime.parse(start,formatter);
+        LocalDateTime endZeit = LocalDateTime.parse(end,formatter);
+        Raum r = new Raum(raumnummer);
+        Buchung buchung = new Buchung(r, startZeit, endZeit,Client.angemeldeterUser);
+
+        mainActivity.addItem(buchung);
+        editText_Raumnummer.setText("");
+        editText_Raumnummer.requestFocus();
+    }
+
 
 }

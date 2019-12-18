@@ -11,8 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class LoginActivity extends AppCompatActivity {
+import swe.fhbielefeld.raumbuchung20.modules.User;
 
+public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,34 +27,37 @@ public class LoginActivity extends AppCompatActivity {
 
 
             // Method to check whether the user input matches the (hard-coded) database.
-            private boolean UserCheck(){
+            private User UserCheck(){
                 EditText username = findViewById(R.id.editText_username);
                 EditText password = findViewById(R.id.editText_password);
 
-                String u1 = "admin", p1 = "admin";
-                String u2 = "chantal", p2 = "chantal";
-                String u3 = "fouad", p3 = "fouad";
-                String u4 = "marko", p4 = "marko";
-                String u5 = "alwin", p5 = "alwin";
+                User u1 = new User("admin","admin");
+                User u2 = new User("chantal","chantal");
+                User u3 = new User("fouad","fouad");
+                User u4 = new User("marko","marko");
+                User u5 = new User("alwin","alwin");
 
-                if(username.getText().toString().equals(u1) && password.getText().toString().equals(p1)) {
-                    return true;
-                }else if(username.getText().toString().equals(u2) && password.getText().toString().equals(p2)){
-                    return true;
-                }else if(username.getText().toString().equals(u3) && password.getText().toString().equals(p3)){
-                    return true;
-                }else if(username.getText().toString().equals(u4) && password.getText().toString().equals(p4)){
-                    return true;
-                }else return username.getText().toString().equals(u5) && password.getText().toString().equals(p5);
+                if(username.getText().toString().equals(u1.getName()) && password.getText().toString().equals(u1.getPasswort())) {
+                    return u1;
+                }else if(username.getText().toString().equals(u2.getName()) && password.getText().toString().equals(u2.getPasswort())){
+                    return u2;
+                }else if(username.getText().toString().equals(u3.getName()) && password.getText().toString().equals(u3.getPasswort())){
+                    return u3;
+                }else if(username.getText().toString().equals(u4.getName()) && password.getText().toString().equals(u4.getPasswort())){
+                    return u4;
+                }else if(username.getText().toString().equals(u5.getName()) && password.getText().toString().equals(u5.getPasswort())){
+                    return u5;
+                }
+                return null;
             }
 
             @Override
             public void onClick(View view){
                 // Check if username/pw match and login -> home screen
-                if(UserCheck()){
+                User user = UserCheck() ;
+                if(user != null){
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    String email = "";
-                    intent.putExtra("Extra_EMAIL",email);
+                    intent.putExtra("ANGEMELDETER_USER", user);
                     Toast.makeText(LoginActivity.this, "Sie haben sich erfolgreich angemeldet",Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                     finish();

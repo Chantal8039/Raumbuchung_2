@@ -13,16 +13,19 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
+import swe.fhbielefeld.raumbuchung20.modules.Buchung;
+import swe.fhbielefeld.raumbuchung20.modules.User;
+
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<String> arrayList = new ArrayList<String>();
-    public void addItem(String s){
-        arrayList.add(s);
+    ArrayList<Buchung> arrayList = new ArrayList<>();
+    public void addItem(Buchung b){
+        arrayList.add(b);
     }
     public void deleteItem(int position) {
         arrayList.remove(position);
     }
-
+    public User angemeldeterUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,16 +37,15 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-        String email="";
         if(savedInstanceState==null){
             Bundle extras = getIntent().getExtras();
             if(extras==null){
                 finish();
             }else{
-                email=extras.getString("Extra_EMAIL");
+                Client.angemeldeterUser=(User)extras.getSerializable("ANGEMELDETER_USER");
             }
         }else{
-            email = savedInstanceState.getString("Extra_EMAIL");
+            Client.angemeldeterUser = (User)savedInstanceState.getSerializable("ANGEMELDETER_USER");
         }
         /*new AlertDialog.Builder(this)
                 .setTitle("Sie haben sich erfolgreich angemeldet")

@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import swe.fhbielefeld.raumbuchung20.modules.Buchung;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +35,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         final ListView listView = view.findViewById(R.id.listView_home);
         final MainActivity mainActivity = (MainActivity) getActivity();
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
+        final ArrayAdapter<Buchung> arrayAdapter = new ArrayAdapter<>
                 (mainActivity, android.R.layout.simple_list_item_1, mainActivity.arrayList);
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

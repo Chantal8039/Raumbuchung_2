@@ -1,28 +1,29 @@
 package swe.fhbielefeld.raumbuchung20.modules;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Buchung {
     private int buchungsId;
-    private Raum raumnummer;
+    private Raum raum;
     private LocalDateTime startzeit;
     private LocalDateTime endzeit;
     private User nutzer;
 
-    public Buchung(int buchungsId, Raum raumnummer, LocalDateTime startzeit, LocalDateTime endzeit, User nutzer) {
-        this.buchungsId = buchungsId;
-        this.raumnummer = raumnummer;
+    public Buchung(/*int buchungsId,*/ Raum raum, LocalDateTime startzeit, LocalDateTime endzeit, User nutzer) {
+        //this.buchungsId = buchungsId;
+        this.raum = raum;
         this.startzeit = startzeit;
         this.endzeit = endzeit;
         this.nutzer = nutzer;
     }
 
-    public int getBuchungsId() {
+    /*public int getBuchungsId() {
         return buchungsId;
-    }
+    }*/
 
-    public Raum getRaumnummer() {
-        return raumnummer;
+    public Raum getRaum() {
+        return raum;
     }
 
     public LocalDateTime getStartzeit() {
@@ -39,6 +40,9 @@ public class Buchung {
 
     @Override
     public String toString(){
-        return "Raum: " + getRaumnummer() + " ";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        String start = getStartzeit().format(formatter);
+        String end = getEndzeit().format(formatter);
+        return "Raum: " + getRaum().getRaumnummer() + "\nvon: " + start + " bis: " + end;
     }
 }
