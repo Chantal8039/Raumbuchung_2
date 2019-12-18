@@ -11,7 +11,7 @@
         android:id="@+id/editText_buchen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Raumnummer"/>
+        android:hint="@string/BuchungRaumNr"/>
 
 
 
@@ -20,8 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-
-        android:text="Wähle das Datum"
+        android:text="@string/BuchungDatumWahl"
         android:layout_marginTop="60dp"/>
 
     <TextView
