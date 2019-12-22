@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BuchungenFragment">
 
+    <EditText
+        android:id="@+id/editText_raumsuchen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Raumnummer"/>
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/editText_datumsuchen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Datum"/>
+
+    <Button
+        android:id="@+id/button_suchen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Suchen" />
+
+    <ListView
+        android:id="@+id/listView_home"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+</LinearLayout>
