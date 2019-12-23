@@ -29,6 +29,9 @@ public class Server {
         LocalDateTime startZeit = LocalDateTime.parse("09.01.2019 12:00",formatter);
         LocalDateTime endZeit = LocalDateTime.parse("09.01.2019 14:00",formatter);
         buchungsList.add(new Buchung(findRaum("D019"),startZeit, endZeit, findUser("chantal")));
+        startZeit = LocalDateTime.parse("10.01.2019 12:00",formatter);
+        endZeit = LocalDateTime.parse("10.01.2019 14:00",formatter);
+        buchungsList.add(new Buchung(findRaum("F013"),startZeit, endZeit, findUser("fouad")));
     }
     public static Server getInstance(){
         if (Server.instance == null) {
@@ -44,13 +47,28 @@ public class Server {
         }
         return null;
     }
-    public Buchung findBuchung(String raum){
+    public ArrayList<Buchung> findBuchungenByRaum(String raum){
+        ArrayList<Buchung> filter = new ArrayList<>();
         for (Buchung b : buchungsList){
-            if(b.getRaum().equals(raum)){
-                return b;
+            if(b.getRaum().getRaumnummer().equals(raum)){
+                filter.add(b);
             }
         }
-        return null;
+        return filter;
+    }
+
+    public ArrayList<Buchung> findBuchungenByDatum(LocalDateTime datum){
+        ArrayList<Buchung> filter = new ArrayList<>();
+        for (Buchung b : buchungsList){
+            if(b.getStartzeit().getDayOfMonth() == datum.getDayOfMonth()){
+                if(b.getStartzeit().getMonthValue() == datum.getMonthValue()) {
+                    if(b.getStartzeit().getYear() == datum.getYear()) {
+                        filter.add(b);
+                    }
+                }
+            }
+        }
+        return filter;
     }
     public void addBuchung(Buchung b){
         if(b != null){
