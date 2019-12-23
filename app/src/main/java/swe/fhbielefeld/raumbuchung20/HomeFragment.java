@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import swe.fhbielefeld.raumbuchung20.modules.Buchung;
+import swe.fhbielefeld.raumbuchung20.modules.Server;
 
 
 /**
@@ -36,7 +37,7 @@ public class HomeFragment extends Fragment {
         final ListView listView = view.findViewById(R.id.listView_home);
         final MainActivity mainActivity = (MainActivity) getActivity();
         final ArrayAdapter<Buchung> arrayAdapter = new ArrayAdapter<>
-                (mainActivity, android.R.layout.simple_list_item_1, mainActivity.arrayList);
+                (mainActivity, android.R.layout.simple_list_item_1, Server.getInstance().getBuchungen());
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -52,7 +53,7 @@ public class HomeFragment extends Fragment {
                         "Ja",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                mainActivity.deleteItem(position);
+                                Server.getInstance().deleteBuchung(position);
                                 arrayAdapter.notifyDataSetChanged();
                                 dialog.cancel();
                             }

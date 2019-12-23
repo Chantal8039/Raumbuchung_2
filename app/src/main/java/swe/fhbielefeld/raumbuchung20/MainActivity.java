@@ -1,6 +1,5 @@
 package swe.fhbielefeld.raumbuchung20;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -11,20 +10,10 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-
-import swe.fhbielefeld.raumbuchung20.modules.Buchung;
+import swe.fhbielefeld.raumbuchung20.modules.Client;
 import swe.fhbielefeld.raumbuchung20.modules.User;
 
 public class MainActivity extends AppCompatActivity {
-
-    ArrayList<Buchung> arrayList = new ArrayList<>();
-    public void addItem(Buchung b){
-        arrayList.add(b);
-    }
-    public void deleteItem(int position) {
-        arrayList.remove(position);
-    }
     public User angemeldeterUser;
 
     @Override

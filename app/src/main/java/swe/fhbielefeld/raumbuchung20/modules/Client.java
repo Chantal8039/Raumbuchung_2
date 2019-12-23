@@ -1,4 +1,4 @@
-package swe.fhbielefeld.raumbuchung20;
+package swe.fhbielefeld.raumbuchung20.modules;
 
 import swe.fhbielefeld.raumbuchung20.modules.User;
 

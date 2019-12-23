@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -25,7 +22,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import swe.fhbielefeld.raumbuchung20.modules.Buchung;
+import swe.fhbielefeld.raumbuchung20.modules.Client;
 import swe.fhbielefeld.raumbuchung20.modules.Raum;
+import swe.fhbielefeld.raumbuchung20.modules.Server;
 
 public class NeueBuchungFragment extends Fragment {
 
@@ -109,9 +108,9 @@ public class NeueBuchungFragment extends Fragment {
         LocalDateTime startZeit = LocalDateTime.parse(start,formatter);
         LocalDateTime endZeit = LocalDateTime.parse(end,formatter);
         Raum r = new Raum(raumnummer);
-        Buchung buchung = new Buchung(r, startZeit, endZeit,Client.angemeldeterUser);
+        Buchung buchung = new Buchung(r, startZeit, endZeit, Client.angemeldeterUser);
 
-        mainActivity.addItem(buchung);
+        Server.getInstance().addBuchung(buchung);
         editText_Raumnummer.setText("");
         editText_Raumnummer.requestFocus();
     }
