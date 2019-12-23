@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home" />
+        android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+        android:title="Meine Buchungen" />
 
     <item
         android:id="@+id/navigation_neu"
         android:icon="@drawable/ic_add_circle_black_24dp"
-        android:title="neue Buchung" />
+        android:title="Neue Buchung" />
 
     <item
         android:id="@+id/navigation_buchungen"
-        android:icon="@drawable/ic_format_list_bulleted_black_24dp"
-        android:title="Buchungen"/>
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="Durchsuchen"/>
 
 </menu>
