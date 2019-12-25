@@ -86,8 +86,10 @@ public class NeueBuchungFragment extends Fragment {
                         "Ja",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+                                // Check if user chosen times are logical.
                                 if(spinner_Start.getSelectedItemPosition() < spinner_End.getSelectedItemPosition())
                                 {
+                                    // Check if user input rooms are available in the list.
                                     if(raumCheck() != null)
                                     {
                                         assert mainActivity != null;
