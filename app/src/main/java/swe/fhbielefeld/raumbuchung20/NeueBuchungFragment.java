@@ -12,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;  // neu von marvins code
 import java.time.LocalDateTime;
@@ -38,7 +40,7 @@ public class NeueBuchungFragment extends Fragment {
     private MainActivity mainActivity;
 
 
-    public NeueBuchungFragment() throws ParseException {
+    public NeueBuchungFragment() {
         // Required empty public constructor
     }
 
@@ -54,6 +56,22 @@ public class NeueBuchungFragment extends Fragment {
         spinner_Start = view.findViewById(R.id.spinner_start);
         spinner_End = view.findViewById(R.id.spinner_end);
         mainActivity = (MainActivity) getActivity();
+
+        spinner_Start.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            public void onItemSelected(AdapterView<?> parentView,
+                                       View selectedItemView, int position, long id) {
+                // Object item = parentView.getItemAtPosition(position);
+
+                // Depend on first spinner value set adapter to 2nd spinner
+
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {// do nothing
+            }
+
+        });
+
         button_Buchen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -68,12 +86,57 @@ public class NeueBuchungFragment extends Fragment {
                         "Ja",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                assert mainActivity != null;
-                                InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                assert mgr != null;
-                                mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(),0);
-                                dialog.cancel();
-                                buchung_erstellen();
+                                if(spinner_Start.getSelectedItemPosition() < spinner_End.getSelectedItemPosition())
+                                {
+                                    if(raumCheck() != null)
+                                    {
+                                        assert mainActivity != null;
+                                        InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        assert mgr != null;
+                                        mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(),0);
+                                        dialog.cancel();
+                                        buchung_erstellen();
+                                        Toast.makeText(getContext(),"Raum ist gebucht!",Toast.LENGTH_SHORT).show();
+                                    }
+                                    else
+                                    {
+                                        AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
+                                        builder2.setMessage("Bitte einen gültigen Raum eingeben.");
+                                        builder2.setCancelable(true);
+
+                                        builder2.setNeutralButton(
+                                                "Ok",
+                                                new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface dialog, int id) {
+                                                        dialog.cancel();
+                                                    }
+                                                }
+                                        );
+
+                                        AlertDialog alertZeiten = builder2.create();
+                                        alertZeiten.show();
+                                    }
+
+                                }
+                                else
+                                {
+                                    AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
+                                    builder2.setMessage("Bitte eine gültige Zeit auswählen.");
+                                    builder2.setCancelable(true);
+
+                                    builder2.setNeutralButton(
+                                            "Ok",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            }
+                                    );
+
+                                    AlertDialog alertZeiten = builder2.create();
+                                    alertZeiten.show();
+                                }
+
                             }
                         });
 
@@ -89,6 +152,7 @@ public class NeueBuchungFragment extends Fragment {
                 AlertDialog alert11 = builder1.create();
                 alert11.show();
                 InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert mgr != null;
                 mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(),0);
             }
         });
@@ -101,7 +165,6 @@ public class NeueBuchungFragment extends Fragment {
         String start = spinner_Start.getSelectedItem().toString();
         String end = spinner_End.getSelectedItem().toString();
         String raumnummer = editText_Raumnummer.getText().toString();
-
         start = datum + " " + start;
         end = datum + " " + end;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
@@ -115,5 +178,18 @@ public class NeueBuchungFragment extends Fragment {
         editText_Raumnummer.requestFocus();
     }
 
+    private Raum raumCheck(){
+        Raum r = Server.getInstance().findRaum(editText_Raumnummer.getText().toString());
+        if(r != null){
+            if(r.getRaumnummer().equals(editText_Raumnummer.getText().toString())){
+                return r;
+            }
+        }
+        else
+        {
+            return null;
+        }
+        return null;
+    }
 
 }

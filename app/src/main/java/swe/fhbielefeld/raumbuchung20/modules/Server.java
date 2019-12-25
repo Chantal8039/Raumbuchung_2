@@ -8,8 +8,8 @@ public class Server {
     private ArrayList<Buchung> buchungsList = new ArrayList<>();
     private ArrayList<User> userList = new ArrayList<>();
     private ArrayList<Raum> raumList = new ArrayList<>();
-    public static Server instance;
-    public Server(){
+    private static Server instance;
+    private Server(){
 
         raumList.add(new Raum("F013"));
         raumList.add(new Raum("A102"));
@@ -33,12 +33,14 @@ public class Server {
         endZeit = LocalDateTime.parse("10.01.2019 14:00",formatter);
         buchungsList.add(new Buchung(findRaum("F013"),startZeit, endZeit, findUser("fouad")));
     }
+
     public static Server getInstance(){
         if (Server.instance == null) {
             Server.instance = new Server ();
         }
         return Server.instance;
     }
+
     public User findUser(String name){
         for (User u : userList){
             if(u.getName().equals(name)){
@@ -47,6 +49,7 @@ public class Server {
         }
         return null;
     }
+
     public ArrayList<Buchung> findBuchungenByRaum(String raum){
         ArrayList<Buchung> filter = new ArrayList<>();
         for (Buchung b : buchungsList){
@@ -70,17 +73,21 @@ public class Server {
         }
         return filter;
     }
+
     public void addBuchung(Buchung b){
         if(b != null){
             buchungsList.add(b);
         }
     }
+
     public ArrayList<Buchung> getBuchungen(){
         return buchungsList;
     }
+
     public void deleteBuchung(int position) {
         buchungsList.remove(position);
     }
+
     public Raum findRaum(String raumnummer){
         for (Raum r : raumList){
             if(r.getRaumnummer().equals(raumnummer)){

@@ -3,6 +3,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="buchen">buchen</string>
 
+
     <string-array name="starttimes">
         <item>08:00</item>
         <item>09:00</item>
@@ -35,11 +36,17 @@
         <item>20:00</item>
     </string-array>
 
+
+
+
     <string name="LoginUsername">username eingeben</string>
     <string name="LoginPassword">passwort eingeben</string>
     <string name="LoginButton">LOGIN</string>
+
     <string name="HomeAddBuchung">HINZUFÜGEN</string>
+
     <string name="BuchungHeader">Buchungsscreen</string>
     <string name="BuchungRaumNr">Raumnummer</string>
     <string name="BuchungDatumWahl">Wähle das Datum</string>
+
 </resources>
