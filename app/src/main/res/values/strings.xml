@@ -48,5 +48,6 @@
     <string name="BuchungHeader">Buchungsscreen</string>
     <string name="BuchungRaumNr">Raumnummer</string>
     <string name="BuchungDatumWahl">Wähle das Datum</string>
+    <string name="datumWahl">Wähle das Datum</string>
 
 </resources>

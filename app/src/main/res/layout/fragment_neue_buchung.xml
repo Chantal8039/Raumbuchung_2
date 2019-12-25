@@ -11,7 +11,9 @@
         android:id="@+id/editText_buchen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/BuchungRaumNr" />
+        android:hint="@string/BuchungRaumNr"
+        android:importantForAutofill="no"
+        android:inputType="text" />
 
     <TextView
         android:id="@+id/textView_datum"
@@ -19,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:hint="          Wähle das Datum"
+        android:hint="@string/datumWahl"
         android:textAlignment="gravity"
         android:textSize="30sp" />
 
