@@ -48,5 +48,6 @@
     <string name="BuchungHeader">Buchungsscreen</string>
     <string name="BuchungRaumNr">Raumnummer</string>
     <string name="BuchungDatumWahl">Wähle das Datum</string>
+    <string name="TestDate">19.03.2020</string>
 
 </resources>
