@@ -1,6 +1,7 @@
 package swe.fhbielefeld.raumbuchung20;
 
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -11,15 +12,20 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import swe.fhbielefeld.raumbuchung20.modules.Buchung;
 import swe.fhbielefeld.raumbuchung20.modules.Server;
@@ -33,15 +39,24 @@ public class BuchungenFragment extends Fragment {
     private EditText edtRaumsuchen;
     private EditText edtDatumsuchen;
     private Button btnSuchen;
+    private Button btnCalendar;
     private ListView lvListe;
     private ArrayAdapter<Buchung> arrayAdapter;
     private ArrayList<Buchung> buchungsListe;
+
+    DatePickerDialog datePickerDialog;
+
+    int year;
+    int month;
+    int dayOfMonth;
+    Calendar calendar;
     public BuchungenFragment() {
         // Required empty public constructor
     }
     private void initViews(View view){
         edtRaumsuchen = view.findViewById(R.id.editText_raumsuchen);
         edtDatumsuchen = view.findViewById(R.id.editText_datumsuchen);
+        btnCalendar = view.findViewById(R.id.button_calendar);
         btnSuchen = view.findViewById(R.id.button_suchen);
         btnSuchen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,11 +74,40 @@ public class BuchungenFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_buchungen, container, false);
         initViews(v);
 
+        btnCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+
+                dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+                datePickerDialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                                if(day >= 10 && (month+1)>=10)
+                                    edtDatumsuchen.setText(day + "." +(month + 1) + "." + year);
+                                if(day < 10 && (month+1)>=10)
+                                    edtDatumsuchen.setText("0" + day + "." +(month + 1) + "." + year);
+                                if(day >= 10 && (month+1)<10)
+                                    edtDatumsuchen.setText(day + "."+ "0" + (month + 1) + "." + year);
+                                if(day < 10 && (month+1) < 10)
+                                    edtDatumsuchen.setText("0" + day + "."+ "0" + (month + 1) + "." + year);
+                            }
+                        }, year, month, dayOfMonth);
+                //datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
+                datePickerDialog.show();
+            }
+        });
+
         return v;
     }
     private void filterBuchung(){
         String raumnummer = edtRaumsuchen.getText().toString();
         String datum = edtDatumsuchen.getText().toString();
+        //String datum = edtDatumsuchen.toString();
         boolean filterRaum = false;
         boolean filterDatum = false;
 
