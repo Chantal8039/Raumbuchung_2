@@ -139,7 +139,9 @@ public class BuchungenFragment extends Fragment {
             LocalDateTime datumFilter = LocalDateTime.parse(datum,formatter);
             buchungsListe = Server.getInstance().findBuchungenByDatum(datumFilter);
         }
-        if (buchungsListe.isEmpty()){Toast.makeText(getActivity(),"Keine Buchungen gefunden.", Toast.LENGTH_SHORT);}
+        if (buchungsListe.isEmpty()){
+            Toast.makeText(getActivity(),"Keine Buchungen gefunden.", Toast.LENGTH_SHORT).show();}
+
         arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, buchungsListe);
         lvListe.setAdapter(arrayAdapter);
 

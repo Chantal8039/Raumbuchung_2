@@ -26,11 +26,11 @@ public class Server {
 
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        LocalDateTime startZeit = LocalDateTime.parse("09.01.2019 12:00",formatter);
-        LocalDateTime endZeit = LocalDateTime.parse("09.01.2019 14:00",formatter);
+        LocalDateTime startZeit = LocalDateTime.parse("09.01.2020 12:00",formatter);
+        LocalDateTime endZeit = LocalDateTime.parse("09.01.2020 14:00",formatter);
         buchungsList.add(new Buchung(findRaum("D019"),startZeit, endZeit, findUser("chantal")));
-        startZeit = LocalDateTime.parse("10.01.2019 12:00",formatter);
-        endZeit = LocalDateTime.parse("10.01.2019 14:00",formatter);
+        startZeit = LocalDateTime.parse("10.01.2020 12:00",formatter);
+        endZeit = LocalDateTime.parse("10.01.2020 14:00",formatter);
         buchungsList.add(new Buchung(findRaum("F013"),startZeit, endZeit, findUser("fouad")));
     }
 
@@ -95,5 +95,16 @@ public class Server {
             }
         }
         return null;
+    }
+
+    public boolean hatBuchungUeberschneidung(Buchung check){
+        ArrayList<Buchung> compare = findBuchungenByRaum(check.getRaum().getRaumnummer());
+        if (compare.isEmpty()) return false;
+        for(Buchung b:compare){
+            if(check.getStartzeit().isBefore(b.getEndzeit()) && b.getStartzeit().isBefore(check.getEndzeit())){
+                return true;
+            }
+        }
+        return false;
     }
 }

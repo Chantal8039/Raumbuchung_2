@@ -129,8 +129,9 @@ public class NeueBuchungFragment extends Fragment {
                 {
                     // Check if user input rooms are available in the list.
                     if(raumCheck() != null) {
+                        buchung_erstellen();
                         // Dialogue pop-up warning for home list deletion
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                        /*AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
                         builder1.setMessage("Möchten Sie die Buchung hinzufügen?");
                         builder1.setCancelable(true);
 
@@ -145,7 +146,7 @@ public class NeueBuchungFragment extends Fragment {
                                         mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(), 0);
                                         dialog.cancel();
                                         buchung_erstellen();
-                                        Toast.makeText(getContext(), "Raum ist gebucht!", Toast.LENGTH_SHORT).show();
+
                                     }
                                 });
 
@@ -162,6 +163,8 @@ public class NeueBuchungFragment extends Fragment {
                         InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
                         assert mgr != null;
                         mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(),0);
+
+                         */
                     }
                     else
                     {
@@ -217,9 +220,13 @@ public class NeueBuchungFragment extends Fragment {
         LocalDateTime endZeit = LocalDateTime.parse(end,formatter);
         Raum r = new Raum(raumnummer);
         Buchung buchung = new Buchung(r, startZeit, endZeit, Client.angemeldeterUser);
-
-        Server.getInstance().addBuchung(buchung);
-        editText_Raumnummer.setText("");
+        if(!Server.getInstance().hatBuchungUeberschneidung(buchung)){
+            Server.getInstance().addBuchung(buchung);
+            Toast.makeText(getContext(), "Raum ist gebucht!", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(getContext(), "Raum ist in gewähltem Zeitraum bereits belegt!",Toast.LENGTH_SHORT).show();
+        }
+        //editText_Raumnummer.setText("");
         editText_Raumnummer.requestFocus();
     }
 
@@ -230,11 +237,6 @@ public class NeueBuchungFragment extends Fragment {
                 return r;
             }
         }
-        else
-        {
-            return null;
-        }
         return null;
     }
-
 }
