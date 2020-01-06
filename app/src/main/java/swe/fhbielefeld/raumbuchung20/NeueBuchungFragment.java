@@ -242,69 +242,38 @@ public class NeueBuchungFragment extends Fragment {
             Server.getInstance().addBuchung(buchung);
             Toast.makeText(getContext(), "Raum ist gebucht!", Toast.LENGTH_SHORT).show();
         }else{
-            // Room is not available
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-            builder1.setMessage("Der Raum ist zu dieser Zeit nicht verfügbar. Möchten Sie einen alternativen Raum buchen?");
-            builder1.setCancelable(true);
-            // Set Button if user presses "Yes"
-            builder1.setPositiveButton(
-                    "Ja",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            AlertDialog.Builder builderInner = new AlertDialog.Builder(getContext());
-                            builderInner.setTitle("Bitte einen alternativen Raum wählen.");
-                            String[] altRaum = {"x","x","x","x","x"};
-                                if(altRaum.length != 0)
-                                {
-                                    builderInner.setItems(altRaum, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            switch (which) {
-                                                case 0:
-                                                case 1:
-                                                case 2:
-                                                case 3:
-                                                case 4:
-                                            }
-                                        }
-                                    });
-                                    AlertDialog dialogPop = builderInner.create();
-                                    dialogPop.show();
-                                }
-                                else
-                                {
-                                    AlertDialog.Builder builderNoAlt = new AlertDialog.Builder(getContext());
-                                    builderNoAlt.setMessage("Keine Räume zu dieser Zeit verfügbar.");
-                                    builderNoAlt.setCancelable(true);
+            final Raum alternative = Server.getInstance().findeAlternative(startZeit,endZeit);
+            if(alternative!=null){ //Alternative gefunden
+                // Room is not available
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                builder1.setMessage("Der Raum ist zu dieser Zeit nicht verfügbar.\nAls Alternative wurde in dieser Zeit Raum " + alternative.getRaumnummer() + " gefunden.\nMöchten Sie diesen Raum buchen?");
+                builder1.setCancelable(true);
+                // Set Button if user presses "Yes"
+                builder1.setPositiveButton(
+                        "Ja",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                buchung.setRaum(alternative);
+                                Server.getInstance().addBuchung(buchung);
+                                Toast.makeText(getContext(), "Raum ist gebucht!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
-                                    builderNoAlt.setNeutralButton(
-                                            "Ok",
-                                            new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface dialog, int id) {
-                                                    dialog.cancel();
-                                                }
-                                            }
-                                    );
-                                    AlertDialog alertNoAlt = builderNoAlt.create();
-                                    alertNoAlt.show();
-                                }
+                // Set Button if user presses "No"
+                builder1.setNegativeButton(
+                        "Nein",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            }else{
+                Toast.makeText(getContext(), "Im gewählten Zeitraum sind bereits alle Räume belegt!",Toast.LENGTH_SHORT).show();
+            }
 
 
-                            //dialog.cancel();
-                        }
-                    });
-
-            // Set Button if user presses "No"
-            builder1.setNegativeButton(
-                    "Nein",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert11 = builder1.create();
-            alert11.show();
-            //Toast.makeText(getContext(), "Raum ist in gewähltem Zeitraum bereits belegt!",Toast.LENGTH_SHORT).show();
 
         }
         //editText_Raumnummer.setText("");

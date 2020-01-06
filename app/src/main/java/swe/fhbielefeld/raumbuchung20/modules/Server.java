@@ -107,4 +107,13 @@ public class Server {
         }
         return false;
     }
+    public Raum findeAlternative(LocalDateTime start, LocalDateTime ende){
+        for (Raum r: raumList){
+            Buchung b=new Buchung(r, start, ende, Client.angemeldeterUser);
+            if(!hatBuchungUeberschneidung(b)){
+                return r;
+            }
+        }
+        return null;
+    }
 }

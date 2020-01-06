@@ -21,7 +21,7 @@ public class Buchung {
     /*public int getBuchungsId() {
         return buchungsId;
     }*/
-
+    public void setRaum(Raum r){this.raum=r;}
     public Raum getRaum() {
         return raum;
     }
@@ -42,6 +42,7 @@ public class Buchung {
     public String toString(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         String start = getStartzeit().format(formatter);
+        formatter = DateTimeFormatter.ofPattern("HH:mm");
         String end = getEndzeit().format(formatter);
         return "Raum: " + getRaum().getRaumnummer() + "\nvon: " + start + " bis: " + end;
     }
