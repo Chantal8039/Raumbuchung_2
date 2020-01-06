@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.view.LayoutInflater;
@@ -127,50 +128,67 @@ public class NeueBuchungFragment extends Fragment {
                 // Check if user input times are logical. start < end
                 if(spinner_Start.getSelectedItemPosition() < spinner_End.getSelectedItemPosition())
                 {
-                    // Check if user input rooms are available in the list.
-                    if(raumCheck() != null) {
-                        buchung_erstellen();
-                        // Dialogue pop-up warning for home list deletion
-                        /*AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-                        builder1.setMessage("Möchten Sie die Buchung hinzufügen?");
-                        builder1.setCancelable(true);
+                    if(textView_Datum.getText().toString() != "") {
+                        // Check if user input rooms are available in the list.
+                        if (raumCheck() != null) {
+                            buchung_erstellen();
+                            // Dialogue pop-up warning for home list deletion
+                            /*AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+                            builder1.setMessage("Möchten Sie die Buchung hinzufügen?");
+                            builder1.setCancelable(true);
 
-                        // Set Button if user presses "Yes"
-                        builder1.setPositiveButton(
-                                "Ja",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        assert mainActivity != null;
-                                        InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                        assert mgr != null;
-                                        mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(), 0);
-                                        dialog.cancel();
-                                        buchung_erstellen();
+                            // Set Button if user presses "Yes"
+                            builder1.setPositiveButton(
+                                    "Ja",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            assert mainActivity != null;
+                                            InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                            assert mgr != null;
+                                            mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(), 0);
+                                            dialog.cancel();
+                                            buchung_erstellen();
 
+                                        }
+                                    });
+
+                            // Set Button if user presses "No"
+                            builder1.setNegativeButton(
+                                    "Nein",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                            AlertDialog alert11 = builder1.create();
+                            alert11.show();
+                            InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                            assert mgr != null;
+                            mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(),0);
+
+                             */
+                        } else {
+                            // If user input wrong room number (doesn't exist)
+                            AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
+                            builder2.setMessage("Bitte einen gültigen Raum eingeben.");
+                            builder2.setCancelable(true);
+                            builder2.setNeutralButton(
+                                    "Ok",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
                                     }
-                                });
-
-                        // Set Button if user presses "No"
-                        builder1.setNegativeButton(
-                                "Nein",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
-                        InputMethodManager mgr = (InputMethodManager) mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                        assert mgr != null;
-                        mgr.hideSoftInputFromWindow(editText_Raumnummer.getWindowToken(),0);
-
-                         */
+                            );
+                            AlertDialog alertZeiten = builder2.create();
+                            alertZeiten.show();
+                        }
                     }
                     else
                     {
                         // If user input wrong room number (doesn't exist)
                         AlertDialog.Builder builder2 = new AlertDialog.Builder(getContext());
-                        builder2.setMessage("Bitte einen gültigen Raum eingeben.");
+                        builder2.setMessage("Bitte ein Datum auswählen.");
                         builder2.setCancelable(true);
                         builder2.setNeutralButton(
                                 "Ok",
@@ -219,12 +237,75 @@ public class NeueBuchungFragment extends Fragment {
         LocalDateTime startZeit = LocalDateTime.parse(start,formatter);
         LocalDateTime endZeit = LocalDateTime.parse(end,formatter);
         Raum r = new Raum(raumnummer);
-        Buchung buchung = new Buchung(r, startZeit, endZeit, Client.angemeldeterUser);
+        final Buchung buchung = new Buchung(r, startZeit, endZeit, Client.angemeldeterUser);
         if(!Server.getInstance().hatBuchungUeberschneidung(buchung)){
             Server.getInstance().addBuchung(buchung);
             Toast.makeText(getContext(), "Raum ist gebucht!", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(getContext(), "Raum ist in gewähltem Zeitraum bereits belegt!",Toast.LENGTH_SHORT).show();
+            // Room is not available
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+            builder1.setMessage("Der Raum ist zu dieser Zeit nicht verfügbar. Möchten Sie einen alternativen Raum buchen?");
+            builder1.setCancelable(true);
+            // Set Button if user presses "Yes"
+            builder1.setPositiveButton(
+                    "Ja",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            AlertDialog.Builder builderInner = new AlertDialog.Builder(getContext());
+                            builderInner.setTitle("Bitte einen alternativen Raum wählen.");
+                            String[] altRaum = {"x","x","x","x","x"};
+                                if(altRaum.length != 0)
+                                {
+                                    builderInner.setItems(altRaum, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            switch (which) {
+                                                case 0:
+                                                case 1:
+                                                case 2:
+                                                case 3:
+                                                case 4:
+                                            }
+                                        }
+                                    });
+                                    AlertDialog dialogPop = builderInner.create();
+                                    dialogPop.show();
+                                }
+                                else
+                                {
+                                    AlertDialog.Builder builderNoAlt = new AlertDialog.Builder(getContext());
+                                    builderNoAlt.setMessage("Keine Räume zu dieser Zeit verfügbar.");
+                                    builderNoAlt.setCancelable(true);
+
+                                    builderNoAlt.setNeutralButton(
+                                            "Ok",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            }
+                                    );
+                                    AlertDialog alertNoAlt = builderNoAlt.create();
+                                    alertNoAlt.show();
+                                }
+
+
+                            //dialog.cancel();
+                        }
+                    });
+
+            // Set Button if user presses "No"
+            builder1.setNegativeButton(
+                    "Nein",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+            //Toast.makeText(getContext(), "Raum ist in gewähltem Zeitraum bereits belegt!",Toast.LENGTH_SHORT).show();
+
         }
         //editText_Raumnummer.setText("");
         editText_Raumnummer.requestFocus();
