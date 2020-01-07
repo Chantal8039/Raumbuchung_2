@@ -15,8 +15,8 @@ public class Server {
         raumList.add(new Raum("A102"));
         raumList.add(new Raum("B017"));
         raumList.add(new Raum("D019"));
-        raumList.add(new Raum("1"));
-        raumList.add(new Raum("2"));
+        raumList.add(new Raum("F112"));
+        raumList.add(new Raum("B115"));
 
         userList.add(new User("admin","admin"));
         userList.add(new User("chantal","chantal"));

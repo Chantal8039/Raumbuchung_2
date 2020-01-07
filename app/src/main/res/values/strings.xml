@@ -49,5 +49,9 @@
     <string name="BuchungRaumNr">Raumnummer</string>
     <string name="BuchungDatumWahl">Wähle das Datum</string>
     <string name="TestDate">19.03.2020</string>
+    <string name="NeueBuchDate">Wähle das Datum</string>
+    <string name="BuchungSuchButton">Suchen</string>
+    <string name="BuchungDatum">Datum</string>
+    <string name="BuchungNummer">Raumnummer</string>
 
 </resources>
